@@ -82,7 +82,7 @@ function verifyToken(token) {
     }
 }
 async function getUserFromCookies() {
-    const cookieStore = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$cookies$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["cookies"])();
+    const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$request$2f$cookies$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["cookies"])();
     const token = cookieStore.get('token')?.value;
     if (!token) {
         return null;
@@ -141,6 +141,7 @@ function middleware(request) {
     const publicRoutes = [
         '/login',
         '/signup',
+        '/forgot-password',
         '/'
     ];
     // Check if the current path is public
@@ -158,8 +159,8 @@ function middleware(request) {
             response.cookies.delete('token');
             return response;
         }
-        // If already logged in and trying to access login/signup, redirect to dashboard
-        if (decoded && (pathname === '/login' || pathname === '/signup')) {
+        // If already logged in and trying to access login/signup/forgot-password, redirect to dashboard
+        if (decoded && (pathname === '/login' || pathname === '/signup' || pathname === '/forgot-password')) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/dashboard', request.url));
         }
     }

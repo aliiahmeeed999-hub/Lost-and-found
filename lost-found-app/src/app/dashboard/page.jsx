@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { verifyToken } from '@/lib/auth';
+import { verifyToken, getUserFromCookies } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { Package, Search, MessageSquare, TrendingUp, Clock, MapPin } from 'lucide-react';
@@ -53,7 +53,7 @@ export default async function DashboardPage() {
   // ------------------------
   // 1️⃣ Get token from cookies (server-side)
   // ------------------------
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const tokenCookie = cookieStore.get('token');
   const token = tokenCookie?.value;
 

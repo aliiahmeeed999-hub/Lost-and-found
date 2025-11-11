@@ -6,7 +6,7 @@ export function middleware(request) {
   const { pathname } = request.nextUrl;
 
   // Public routes that don't require authentication
-  const publicRoutes = ['/login', '/signup', '/'];
+  const publicRoutes = ['/login', '/signup', '/forgot-password', '/'];
   
   // Check if the current path is public
   const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
@@ -27,8 +27,8 @@ export function middleware(request) {
       return response;
     }
 
-    // If already logged in and trying to access login/signup, redirect to dashboard
-    if (decoded && (pathname === '/login' || pathname === '/signup')) {
+    // If already logged in and trying to access login/signup/forgot-password, redirect to dashboard
+    if (decoded && (pathname === '/login' || pathname === '/signup' || pathname === '/forgot-password')) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
