@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { Package, Search, MessageSquare, TrendingUp, Clock, MapPin } from 'lucide-react';
 
+// Fetch dashboard data from database
 async function getDashboardData(userId) {
   const [user, lostItems, foundItems, totalMessages, recentItems] = await Promise.all([
     prisma.user.findUnique({ 
@@ -49,8 +50,12 @@ async function getDashboardData(userId) {
 }
 
 export default async function DashboardPage() {
+  // ------------------------
+  // 1️⃣ Get token from cookies (server-side)
+  // ------------------------
   const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value;
+  const tokenCookie = cookieStore.get('token');
+  const token = tokenCookie?.value;
 
   if (!token) {
     redirect('/login');
@@ -61,40 +66,44 @@ export default async function DashboardPage() {
     redirect('/login');
   }
 
+  // ------------------------
+  // 2️⃣ Fetch user and dashboard data
+  // ------------------------
   const { user, lostItems, foundItems, totalMessages, recentItems } = await getDashboardData(decoded.userId);
 
   if (!user) {
     redirect('/login');
   }
 
+  // ------------------------
+  // 3️⃣ Render dashboard
+  // ------------------------
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Bar */}
       <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-2 rounded-xl">
-                <Package className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold text-gray-800">Lost & Found</h1>
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-2 rounded-xl">
+              <Package className="w-6 h-6 text-white" />
             </div>
-            <div className="flex items-center gap-4">
-              <Link 
-                href="/items/lost" 
-                className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors font-medium"
-              >
-                Report Lost
-              </Link>
-              <Link 
-                href="/items/found" 
-                className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors font-medium"
-              >
-                Report Found
-              </Link>
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
+            <h1 className="text-2xl font-bold text-gray-800">Lost & Found</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link 
+              href="/items/lost" 
+              className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors font-medium"
+            >
+              Report Lost
+            </Link>
+            <Link 
+              href="/items/found" 
+              className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors font-medium"
+            >
+              Report Found
+            </Link>
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+              {user.name.charAt(0).toUpperCase()}
             </div>
           </div>
         </div>

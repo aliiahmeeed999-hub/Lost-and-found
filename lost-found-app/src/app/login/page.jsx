@@ -15,42 +15,56 @@ export default function LoginPage() {
 
   const handleSubmit = async () => {
     setError('');
-    setLoading(true);
-    
+
+    // Trim inputs
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedName = name.trim();
+
     // Validation
-    if (!email || !password || (!isLogin && !name)) {
+    if (!trimmedEmail || !trimmedPassword || (!isLogin && !trimmedName)) {
       setError('Please fill in all fields');
-      setLoading(false);
       return;
     }
-    
+
+    // Simple email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    setLoading(true);
+
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
-      const body = isLogin 
-        ? { email, password }
-        : { name, email, password };
+      const body = isLogin
+        ? { email: trimmedEmail, password: trimmedPassword }
+        : { name: trimmedName, email: trimmedEmail, password: trimmedPassword };
 
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        setError(data.error || 'Something went wrong');
+        const errorText = await response.text();
+        console.error(`HTTP ${response.status}: ${errorText}`);
+        setError(`Error: ${response.status} - ${errorText || 'Something went wrong'}`);
         setLoading(false);
         return;
       }
 
-      // Success - redirect to dashboard
+      const data = await response.json();
+
+      // Success: redirect
       router.push('/dashboard');
       router.refresh();
-
     } catch (err) {
       console.error('Auth error:', err);
-      setError('Something went wrong. Please try again.');
+      setError('Network error. Please check your connection and try again.');
+    } finally {
       setLoading(false);
     }
   };
@@ -60,20 +74,17 @@ export default function LoginPage() {
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
-      {/* Main container */}
       <div className="relative w-full max-w-5xl grid md:grid-cols-2 gap-0 bg-white rounded-3xl shadow-2xl overflow-hidden">
-        
-        {/* Left side - Branding */}
+        {/* Left side */}
         <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full"></div>
             <div className="absolute bottom-20 right-10 w-40 h-40 border-4 border-white rounded-full"></div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-4 border-white rounded-full"></div>
           </div>
-          
           <div className="relative z-10 text-center">
             <div className="mb-6 flex justify-center gap-4">
               <div className="bg-white bg-opacity-20 p-4 rounded-2xl backdrop-blur-sm">
@@ -83,10 +94,8 @@ export default function LoginPage() {
                 <Package className="w-12 h-12" />
               </div>
             </div>
-            
             <h1 className="text-4xl font-bold mb-4">Lost & Found</h1>
             <p className="text-lg opacity-90 mb-8">Reuniting people with their belongings</p>
-            
             <div className="space-y-4 text-left bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-white rounded-full mt-2"></div>
@@ -104,23 +113,17 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Right side - Form */}
+        {/* Right side */}
         <div className="p-12 flex flex-col justify-center">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              {isLogin ? 'Welcome Back' : 'Create Account'}
-            </h2>
-            <p className="text-gray-600">
-              {isLogin ? 'Sign in to continue your search' : 'Join our community today'}
-            </p>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
+            <p className="text-gray-600">{isLogin ? 'Sign in to continue your search' : 'Join our community today'}</p>
           </div>
 
           <div className="space-y-6">
             {!isLogin && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                 <input
                   type="text"
                   value={name}
@@ -134,9 +137,7 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
               <input
                 type="email"
                 value={email}
@@ -149,9 +150,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
               <input
                 type="password"
                 value={password}
@@ -176,16 +175,14 @@ export default function LoginPage() {
                   <input type="checkbox" className="rounded" />
                   <span className="text-gray-600">Remember me</span>
                 </label>
-                <button className="text-indigo-600 hover:text-indigo-700 font-medium">
-                  Forgot password?
-                </button>
+                <button className="text-indigo-600 hover:text-indigo-700 font-medium">Forgot password?</button>
               </div>
             )}
 
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
             </button>
@@ -195,10 +192,7 @@ export default function LoginPage() {
             <p className="text-gray-600">
               {isLogin ? "Don't have an account?" : 'Already have an account?'}
               <button
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setError('');
-                }}
+                onClick={() => { setIsLogin(!isLogin); setError(''); }}
                 disabled={loading}
                 className="ml-2 text-indigo-600 hover:text-indigo-700 font-semibold disabled:opacity-50"
               >
