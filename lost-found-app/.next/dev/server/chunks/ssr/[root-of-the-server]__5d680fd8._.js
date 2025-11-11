@@ -513,7 +513,7 @@ function ReportLostItemPage() {
                                                 value: formData.title,
                                                 onChange: (e)=>updateFormData('title', e.target.value),
                                                 placeholder: "e.g., Black iPhone 13, Blue Backpack, Silver Watch",
-                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg"
+                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg text-gray-900 placeholder-gray-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                 lineNumber: 266,
@@ -603,7 +603,7 @@ function ReportLostItemPage() {
                                                         value: formData.color,
                                                         onChange: (e)=>updateFormData('color', e.target.value),
                                                         placeholder: "e.g., Black, Blue, Red",
-                                                        className: "w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all"
+                                                        className: "w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                         lineNumber: 308,
@@ -630,7 +630,7 @@ function ReportLostItemPage() {
                                                         value: formData.brand,
                                                         onChange: (e)=>updateFormData('brand', e.target.value),
                                                         placeholder: "e.g., Apple, Nike, Samsung",
-                                                        className: "w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all"
+                                                        className: "w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                         lineNumber: 320,
@@ -680,7 +680,7 @@ function ReportLostItemPage() {
                                                 onChange: (e)=>updateFormData('description', e.target.value),
                                                 rows: 6,
                                                 placeholder: "Provide as much detail as possible. Include size, unique features, condition, etc.",
-                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg resize-none"
+                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg resize-none text-gray-900 placeholder-gray-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                 lineNumber: 342,
@@ -749,7 +749,7 @@ function ReportLostItemPage() {
                                                         onChange: (e)=>setCurrentTag(e.target.value),
                                                         onKeyPress: (e)=>e.key === 'Enter' && (e.preventDefault(), addTag()),
                                                         placeholder: "Add keywords (press Enter)",
-                                                        className: "flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all"
+                                                        className: "flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                         lineNumber: 374,
@@ -850,7 +850,7 @@ function ReportLostItemPage() {
                                                 value: formData.locationLost,
                                                 onChange: (e)=>updateFormData('locationLost', e.target.value),
                                                 placeholder: "e.g., Library Building, Cafeteria, Parking Lot B",
-                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg"
+                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg text-gray-900 placeholder-gray-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                 lineNumber: 421,
@@ -913,7 +913,7 @@ function ReportLostItemPage() {
                                                 value: formData.dateLost,
                                                 onChange: (e)=>updateFormData('dateLost', e.target.value),
                                                 max: new Date().toISOString().split('T')[0],
-                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg"
+                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg text-gray-900 placeholder-gray-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                 lineNumber: 450,
@@ -1085,7 +1085,7 @@ function ReportLostItemPage() {
                                                 value: formData.contactInfo,
                                                 onChange: (e)=>updateFormData('contactInfo', e.target.value),
                                                 placeholder: "Phone number or preferred contact method",
-                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all"
+                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-gray-900 placeholder-gray-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                 lineNumber: 515,
@@ -1123,7 +1123,7 @@ function ReportLostItemPage() {
                                                 placeholder: "0.00",
                                                 min: "0",
                                                 step: "0.01",
-                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg"
+                                                className: "w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 focus:outline-none transition-all text-lg text-gray-900 placeholder-gray-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page.jsx",
                                                 lineNumber: 530,

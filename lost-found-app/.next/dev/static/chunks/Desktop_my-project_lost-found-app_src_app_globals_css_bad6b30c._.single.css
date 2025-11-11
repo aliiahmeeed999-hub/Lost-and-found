@@ -1298,6 +1298,11 @@ h1, h2, h3, h4, h5, h6 {
   color: rgb(161 98 7 / var(--tw-text-opacity, 1));
 }
 
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+
 .text-opacity-80 {
   --tw-text-opacity: .8;
 }
@@ -1314,6 +1319,11 @@ h1, h2, h3, h4, h5, h6 {
 .placeholder-slate-400::placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(148 163 184 / var(--tw-placeholder-opacity, 1));
+}
+
+.placeholder-gray-400::placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-placeholder-opacity, 1));
 }
 
 .opacity-0 {
