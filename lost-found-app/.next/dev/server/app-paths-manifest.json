@@ -1,8 +1,10 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/items/[id]/route": "app/api/items/[id]/route.js",
+  "/api/items/route": "app/api/items/route.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/forgot-password/page": "app/forgot-password/page.js",
-  "/items/lost/page": "app/items/lost/page.js",
-  "/login/page": "app/login/page.js"
+  "/items/[id]/page": "app/items/[id]/page.js",
+  "/items/page": "app/items/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js"
 }

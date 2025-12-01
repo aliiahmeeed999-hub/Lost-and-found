@@ -221,7 +221,7 @@ function ReportLostItemPage() {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch('/api/items/create', {
+            const response = await fetch('/api/items', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

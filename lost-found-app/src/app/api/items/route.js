@@ -2,6 +2,68 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getUserFromCookies } from '@/lib/auth';
 
+export async function GET(request) {
+  try {
+    // Get query parameters for filtering
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status'); // 'lost' or 'found'
+    const category = searchParams.get('category');
+    const page = parseInt(searchParams.get('page')) || 1;
+    const limit = parseInt(searchParams.get('limit')) || 10;
+
+    const skip = (page - 1) * limit;
+
+    // Build filter object
+    const where = {};
+    if (status && ['lost', 'found'].includes(status)) {
+      where.status = status;
+    }
+    if (category) {
+      where.category = category;
+    }
+
+    // Get total count for pagination
+    const total = await prisma.item.count({ where });
+
+    // Get items with user info
+    const items = await prisma.item.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc'
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            profileImage: true
+          }
+        }
+      }
+    });
+
+    return NextResponse.json({
+      success: true,
+      items,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+  } catch (error) {
+    console.error('Fetch items error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch items' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request) {
   try {
     // Check authentication
