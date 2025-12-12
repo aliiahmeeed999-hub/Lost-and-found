@@ -59,7 +59,7 @@ export default function BrowseItemsPage() {
     } catch (err) {
       console.error('Fetch error:', err);
       setError('Failed to load items. Please try again.');
-    } finally {
+    } finally{
       setLoading(false);
     }
   };

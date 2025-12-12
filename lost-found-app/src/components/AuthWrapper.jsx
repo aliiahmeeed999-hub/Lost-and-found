@@ -2,10 +2,7 @@ import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth';
 import { AuthProvider } from '@/context/AuthContext';
 
-/**
- * Checks if user is authenticated server-side
- * and returns initial user data for client
- */
+
 async function getInitialUser() {
   try {
     const cookieStore = await cookies();

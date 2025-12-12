@@ -11,7 +11,8 @@ interface ProfileCardProps {
 /**
  * ProfileCard Component
  * Displays user profile information in a clean card layout
- */
+ *//
+
 export default function ProfileCard({ user }: ProfileCardProps) {
   const joinedDate = new Date(user.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
