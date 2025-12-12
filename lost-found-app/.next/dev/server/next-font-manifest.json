@@ -4,7 +4,23 @@
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
       "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
     ],
+    "[project]/Desktop/my-project/lost-found-app/src/app/dashboard/profile/edit/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
+    ],
+    "[project]/Desktop/my-project/lost-found-app/src/app/dashboard/profile/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
+    ],
     "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
+    ],
+    "[project]/Desktop/my-project/lost-found-app/src/app/items/found/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
+    ],
+    "[project]/Desktop/my-project/lost-found-app/src/app/items/lost/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
       "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
     ],
@@ -17,6 +33,10 @@
       "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
     ],
     "[project]/Desktop/my-project/lost-found-app/src/app/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
+    ],
+    "[project]/Desktop/my-project/lost-found-app/src/app/signup/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
       "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
     ]

@@ -1,0 +1,3 @@
+{
+  "/api/match/check-lost/route": "app/api/match/check-lost/route.js"
+}

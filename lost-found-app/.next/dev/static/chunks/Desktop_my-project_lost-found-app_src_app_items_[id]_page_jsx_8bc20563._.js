@@ -35,22 +35,32 @@ function ItemDetailPage() {
                         const response = await fetch(`/api/items/${params.id}`);
                         console.log('Response status:', response.status);
                         if (!response.ok) {
+                            // Safely parse JSON error
+                            let errorData = {
+                                message: 'Unknown error'
+                            };
                             try {
-                                const errorData = await response.json();
-                                console.error('API Error:', errorData);
+                                errorData = await response.json();
                             } catch (e) {
                                 console.error('Failed to parse error response:', e);
                             }
+                            console.error('API Error:', errorData);
                             if (response.status === 404) {
                                 setError('Item not found');
                             } else {
-                                setError('Failed to load item');
+                                setError(errorData.message || 'Failed to load item');
                             }
                             return;
                         }
                         const data = await response.json();
-                        console.log('Item data received:', data);
-                        setItem(data.item);
+                        // Ensure arrays exist to prevent rendering errors
+                        const normalizedItem = {
+                            ...data,
+                            imageUrls: Array.isArray(data.imageUrls) ? data.imageUrls : [],
+                            tags: Array.isArray(data.tags) ? data.tags : []
+                        };
+                        console.log('Item data received:', normalizedItem);
+                        setItem(normalizedItem);
                     } catch (err) {
                         console.error('Error fetching item:', err);
                         setError('An error occurred while loading the item');
@@ -76,7 +86,7 @@ function ItemDetailPage() {
                         className: "inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
                     }, void 0, false, {
                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                        lineNumber: 58,
+                        lineNumber: 70,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -84,18 +94,18 @@ function ItemDetailPage() {
                         children: "Loading item details..."
                     }, void 0, false, {
                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                        lineNumber: 59,
+                        lineNumber: 71,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                lineNumber: 57,
+                lineNumber: 69,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-            lineNumber: 56,
+            lineNumber: 68,
             columnNumber: 7
         }, this);
     }
@@ -112,7 +122,7 @@ function ItemDetailPage() {
                             children: "Error"
                         }, void 0, false, {
                             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                            lineNumber: 70,
+                            lineNumber: 82,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -120,7 +130,7 @@ function ItemDetailPage() {
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                            lineNumber: 71,
+                            lineNumber: 83,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -129,23 +139,23 @@ function ItemDetailPage() {
                             children: "← Back to Items"
                         }, void 0, false, {
                             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                            lineNumber: 72,
+                            lineNumber: 84,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                    lineNumber: 69,
+                    lineNumber: 81,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                lineNumber: 68,
+                lineNumber: 80,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-            lineNumber: 67,
+            lineNumber: 79,
             columnNumber: 7
         }, this);
     }
@@ -160,17 +170,17 @@ function ItemDetailPage() {
                     children: "← Back to Items"
                 }, void 0, false, {
                     fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                    lineNumber: 88,
+                    lineNumber: 100,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                lineNumber: 87,
+                lineNumber: 99,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-            lineNumber: 86,
+            lineNumber: 98,
             columnNumber: 7
         }, this);
     }
@@ -188,7 +198,7 @@ function ItemDetailPage() {
                     children: "← Back to Items"
                 }, void 0, false, {
                     fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                    lineNumber: 107,
+                    lineNumber: 119,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -198,7 +208,7 @@ function ItemDetailPage() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex flex-col gap-4",
-                                children: item.imageUrls && item.imageUrls.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                children: item.imageUrls.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "bg-gray-100 rounded-lg overflow-hidden h-96 relative",
@@ -209,12 +219,12 @@ function ItemDetailPage() {
                                                 className: "object-cover"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 121,
+                                                lineNumber: 133,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                            lineNumber: 120,
+                                            lineNumber: 132,
                                             columnNumber: 19
                                         }, this),
                                         item.imageUrls.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -228,17 +238,17 @@ function ItemDetailPage() {
                                                         className: "object-cover"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 135,
+                                                        lineNumber: 147,
                                                         columnNumber: 27
                                                     }, this)
                                                 }, idx, false, {
                                                     fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                    lineNumber: 131,
+                                                    lineNumber: 143,
                                                     columnNumber: 25
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                            lineNumber: 129,
+                                            lineNumber: 141,
                                             columnNumber: 21
                                         }, this)
                                     ]
@@ -247,12 +257,12 @@ function ItemDetailPage() {
                                     children: "No image available"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                    lineNumber: 147,
+                                    lineNumber: 159,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                lineNumber: 117,
+                                lineNumber: 129,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -265,7 +275,7 @@ function ItemDetailPage() {
                                                 children: item.title
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 157,
+                                                lineNumber: 169,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -276,7 +286,7 @@ function ItemDetailPage() {
                                                         children: item.status === 'lost' ? '🔍 Lost' : '✓ Found'
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 161,
+                                                        lineNumber: 173,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -284,19 +294,19 @@ function ItemDetailPage() {
                                                         children: item.category
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 164,
+                                                        lineNumber: 176,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 160,
+                                                lineNumber: 172,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                        lineNumber: 156,
+                                        lineNumber: 168,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -306,7 +316,7 @@ function ItemDetailPage() {
                                                 children: "Description"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 172,
+                                                lineNumber: 184,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -314,13 +324,13 @@ function ItemDetailPage() {
                                                 children: item.description
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 173,
+                                                lineNumber: 185,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                        lineNumber: 171,
+                                        lineNumber: 183,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -333,7 +343,7 @@ function ItemDetailPage() {
                                                         children: "Location"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 181,
+                                                        lineNumber: 193,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -341,7 +351,7 @@ function ItemDetailPage() {
                                                         children: item.status === 'lost' ? item.locationLost : item.locationFound
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 182,
+                                                        lineNumber: 194,
                                                         columnNumber: 19
                                                     }, this),
                                                     item.locationDetails && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -349,13 +359,13 @@ function ItemDetailPage() {
                                                         children: item.locationDetails
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 186,
+                                                        lineNumber: 198,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 180,
+                                                lineNumber: 192,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -365,7 +375,7 @@ function ItemDetailPage() {
                                                         children: item.status === 'lost' ? 'Date Lost' : 'Date Found'
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 190,
+                                                        lineNumber: 202,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -381,22 +391,22 @@ function ItemDetailPage() {
                                                         }) : 'Unknown'
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 193,
+                                                        lineNumber: 205,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 189,
+                                                lineNumber: 201,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                        lineNumber: 179,
+                                        lineNumber: 191,
                                         columnNumber: 15
                                     }, this),
-                                    (item.rewardAmount || item.tags || item.color || item.brand || item.distinguishingFeatures) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    (item.rewardAmount || item.tags.length > 0 || item.color || item.brand || item.distinguishingFeatures) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "bg-gray-50 rounded-lg p-4",
                                         children: [
                                             item.rewardAmount && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -407,7 +417,7 @@ function ItemDetailPage() {
                                                         children: "Reward"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 216,
+                                                        lineNumber: 220,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -418,13 +428,13 @@ function ItemDetailPage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 219,
+                                                        lineNumber: 221,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 215,
+                                                lineNumber: 219,
                                                 columnNumber: 21
                                             }, this),
                                             (item.color || item.brand) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -437,16 +447,16 @@ function ItemDetailPage() {
                                                                 children: "Color:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                                lineNumber: 227,
-                                                                columnNumber: 62
+                                                                lineNumber: 226,
+                                                                columnNumber: 75
                                                             }, this),
                                                             " ",
                                                             item.color
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 227,
-                                                        columnNumber: 25
+                                                        lineNumber: 226,
+                                                        columnNumber: 38
                                                     }, this),
                                                     item.brand && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "text-sm text-gray-700",
@@ -455,16 +465,16 @@ function ItemDetailPage() {
                                                                 children: "Brand:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                                lineNumber: 230,
-                                                                columnNumber: 62
+                                                                lineNumber: 227,
+                                                                columnNumber: 75
                                                             }, this),
                                                             " ",
                                                             item.brand
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 230,
-                                                        columnNumber: 25
+                                                        lineNumber: 227,
+                                                        columnNumber: 38
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
@@ -481,7 +491,7 @@ function ItemDetailPage() {
                                                             children: "Details:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                            lineNumber: 236,
+                                                            lineNumber: 232,
                                                             columnNumber: 60
                                                         }, this),
                                                         " ",
@@ -489,22 +499,22 @@ function ItemDetailPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                    lineNumber: 236,
+                                                    lineNumber: 232,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 235,
+                                                lineNumber: 231,
                                                 columnNumber: 21
                                             }, this),
-                                            item.tags && item.tags.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            item.tags.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                         className: "text-sm font-semibold text-gray-600 mb-2",
                                                         children: "Tags"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 241,
+                                                        lineNumber: 237,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -514,24 +524,24 @@ function ItemDetailPage() {
                                                                 children: tag
                                                             }, idx, false, {
                                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                                lineNumber: 246,
+                                                                lineNumber: 240,
                                                                 columnNumber: 27
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 244,
+                                                        lineNumber: 238,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 240,
+                                                lineNumber: 236,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                        lineNumber: 213,
+                                        lineNumber: 217,
                                         columnNumber: 17
                                     }, this),
                                     item.user && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -542,7 +552,7 @@ function ItemDetailPage() {
                                                 children: "Posted By"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 262,
+                                                lineNumber: 253,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -557,12 +567,12 @@ function ItemDetailPage() {
                                                             className: "object-cover"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                            lineNumber: 268,
+                                                            lineNumber: 257,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 267,
+                                                        lineNumber: 256,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -572,7 +582,7 @@ function ItemDetailPage() {
                                                                 children: item.user.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                                lineNumber: 277,
+                                                                lineNumber: 261,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -580,7 +590,7 @@ function ItemDetailPage() {
                                                                 children: item.user.email
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                                lineNumber: 280,
+                                                                lineNumber: 262,
                                                                 columnNumber: 23
                                                             }, this),
                                                             item.user.reputation !== undefined && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -592,25 +602,25 @@ function ItemDetailPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                                lineNumber: 282,
+                                                                lineNumber: 264,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                        lineNumber: 276,
+                                                        lineNumber: 260,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                                lineNumber: 265,
+                                                lineNumber: 254,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                        lineNumber: 261,
+                                        lineNumber: 252,
                                         columnNumber: 17
                                     }, this),
                                     item.user?.email && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$my$2d$project$2f$lost$2d$found$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -619,35 +629,35 @@ function ItemDetailPage() {
                                         children: "Contact Poster"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                        lineNumber: 293,
+                                        lineNumber: 275,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                                lineNumber: 154,
+                                lineNumber: 166,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                        lineNumber: 115,
+                        lineNumber: 127,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-                    lineNumber: 114,
+                    lineNumber: 126,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-            lineNumber: 105,
+            lineNumber: 117,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/Desktop/my-project/lost-found-app/src/app/items/[id]/page.jsx",
-        lineNumber: 104,
+        lineNumber: 116,
         columnNumber: 5
     }, this);
 }

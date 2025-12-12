@@ -76,7 +76,7 @@ export function verifyToken(token) {
  * @returns {Promise<object|null>} User data or null
  */
 export async function getUserFromCookies() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
   
   if (!token) {

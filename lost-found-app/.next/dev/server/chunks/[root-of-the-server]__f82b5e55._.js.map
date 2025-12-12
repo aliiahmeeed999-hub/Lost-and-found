@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/7400/Desktop/my-project/lost-found-app/src/app/api/auth/logout/route.js"],"sourcesContent":["import { NextResponse } from 'next/server';\r\n\r\nexport async function POST() {\r\n  const response = NextResponse.json({ \r\n    success: true,\r\n    message: 'Logged out successfully' \r\n  });\r\n  \r\n  // Clear the token cookie\r\n  response.cookies.set('token', '', {\r\n    httpOnly: true,\r\n    secure: process.env.NODE_ENV === 'production',\r\n    sameSite: 'lax',\r\n    maxAge: 0,\r\n    path: '/'\r\n  });\r\n\r\n  return response;\r\n}"],"names":[],"mappings":";;;;AAAA;;AAEO,eAAe;IACpB,MAAM,WAAW,oMAAY,CAAC,IAAI,CAAC;QACjC,SAAS;QACT,SAAS;IACX;IAEA,yBAAyB;IACzB,SAAS,OAAO,CAAC,GAAG,CAAC,SAAS,IAAI;QAChC,UAAU;QACV,QAAQ,oDAAyB;QACjC,UAAU;QACV,QAAQ;QACR,MAAM;IACR;IAEA,OAAO;AACT","debugId":null}}]
+}

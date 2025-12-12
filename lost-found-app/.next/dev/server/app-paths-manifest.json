@@ -1,10 +1,19 @@
 {
   "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/auth/logout/route": "app/api/auth/logout/route.js",
   "/api/items/[id]/route": "app/api/items/[id]/route.js",
   "/api/items/route": "app/api/items/route.js",
+  "/api/match/list/route": "app/api/match/list/route.js",
+  "/api/notifications/list/route": "app/api/notifications/list/route.js",
+  "/api/user/dashboard/profile/route": "app/api/user/dashboard/profile/route.js",
   "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/profile/edit/page": "app/dashboard/profile/edit/page.js",
+  "/dashboard/profile/page": "app/dashboard/profile/page.js",
   "/items/[id]/page": "app/items/[id]/page.js",
+  "/items/found/page": "app/items/found/page.js",
+  "/items/lost/page": "app/items/lost/page.js",
   "/items/page": "app/items/page.js",
   "/login/page": "app/login/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/signup/page": "app/signup/page.js"
 }

@@ -17,27 +17,39 @@ export default function ItemDetailPage() {
       try {
         setLoading(true);
         console.log('Fetching item with ID:', params.id);
+
         const response = await fetch(`/api/items/${params.id}`);
         console.log('Response status:', response.status);
 
         if (!response.ok) {
+          // Safely parse JSON error
+          let errorData = { message: 'Unknown error' };
           try {
-            const errorData = await response.json();
-            console.error('API Error:', errorData);
+            errorData = await response.json();
           } catch (e) {
             console.error('Failed to parse error response:', e);
           }
+          console.error('API Error:', errorData);
+
           if (response.status === 404) {
             setError('Item not found');
           } else {
-            setError('Failed to load item');
+            setError(errorData.message || 'Failed to load item');
           }
           return;
         }
 
         const data = await response.json();
-        console.log('Item data received:', data);
-        setItem(data.item);
+
+        // Ensure arrays exist to prevent rendering errors
+        const normalizedItem = {
+          ...data,
+          imageUrls: Array.isArray(data.imageUrls) ? data.imageUrls : [],
+          tags: Array.isArray(data.tags) ? data.tags : [],
+        };
+
+        console.log('Item data received:', normalizedItem);
+        setItem(normalizedItem);
       } catch (err) {
         console.error('Error fetching item:', err);
         setError('An error occurred while loading the item');
@@ -115,7 +127,7 @@ export default function ItemDetailPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
             {/* Item Images */}
             <div className="flex flex-col gap-4">
-              {item.imageUrls && item.imageUrls.length > 0 ? (
+              {item.imageUrls.length > 0 ? (
                 <>
                   <div className="bg-gray-100 rounded-lg overflow-hidden h-96 relative">
                     <Image
@@ -192,43 +204,27 @@ export default function ItemDetailPage() {
                   </h3>
                   <p className="text-lg text-gray-900">
                     {item.status === 'lost' && item.dateLost
-                      ? new Date(item.dateLost).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })
+                      ? new Date(item.dateLost).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                       : item.dateFound
-                      ? new Date(item.dateFound).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })
+                      ? new Date(item.dateFound).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                       : 'Unknown'}
                   </p>
                 </div>
               </div>
 
               {/* Additional Info */}
-              {(item.rewardAmount || item.tags || item.color || item.brand || item.distinguishingFeatures) && (
+              {(item.rewardAmount || item.tags.length > 0 || item.color || item.brand || item.distinguishingFeatures) && (
                 <div className="bg-gray-50 rounded-lg p-4">
                   {item.rewardAmount && (
                     <div className="mb-4">
-                      <h3 className="text-sm font-semibold text-gray-600 mb-1">
-                        Reward
-                      </h3>
-                      <p className="text-xl font-bold text-green-600">
-                        ${parseFloat(item.rewardAmount)}
-                      </p>
+                      <h3 className="text-sm font-semibold text-gray-600 mb-1">Reward</h3>
+                      <p className="text-xl font-bold text-green-600">${parseFloat(item.rewardAmount)}</p>
                     </div>
                   )}
                   {(item.color || item.brand) && (
                     <div className="mb-4">
-                      {item.color && (
-                        <p className="text-sm text-gray-700"><strong>Color:</strong> {item.color}</p>
-                      )}
-                      {item.brand && (
-                        <p className="text-sm text-gray-700"><strong>Brand:</strong> {item.brand}</p>
-                      )}
+                      {item.color && <p className="text-sm text-gray-700"><strong>Color:</strong> {item.color}</p>}
+                      {item.brand && <p className="text-sm text-gray-700"><strong>Brand:</strong> {item.brand}</p>}
                     </div>
                   )}
                   {item.distinguishingFeatures && (
@@ -236,17 +232,12 @@ export default function ItemDetailPage() {
                       <p className="text-sm text-gray-700"><strong>Details:</strong> {item.distinguishingFeatures}</p>
                     </div>
                   )}
-                  {item.tags && item.tags.length > 0 && (
+                  {item.tags.length > 0 && (
                     <div>
-                      <h3 className="text-sm font-semibold text-gray-600 mb-2">
-                        Tags
-                      </h3>
+                      <h3 className="text-sm font-semibold text-gray-600 mb-2">Tags</h3>
                       <div className="flex flex-wrap gap-2">
                         {item.tags.map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-1 bg-blue-200 text-blue-800 text-sm rounded-full"
-                          >
+                          <span key={idx} className="px-3 py-1 bg-blue-200 text-blue-800 text-sm rounded-full">
                             {tag}
                           </span>
                         ))}
@@ -259,24 +250,15 @@ export default function ItemDetailPage() {
               {/* Posted By */}
               {item.user && (
                 <div className="bg-blue-50 rounded-lg p-4">
-                  <h3 className="text-sm font-semibold text-gray-600 mb-3">
-                    Posted By
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-600 mb-3">Posted By</h3>
                   <div className="flex items-center gap-4">
                     {item.user.profileImage && (
                       <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                        <Image
-                          src={item.user.profileImage}
-                          alt={item.user.name}
-                          fill
-                          className="object-cover"
-                        />
+                        <Image src={item.user.profileImage} alt={item.user.name} fill className="object-cover" />
                       </div>
                     )}
                     <div>
-                      <p className="font-semibold text-gray-900">
-                        {item.user.name}
-                      </p>
+                      <p className="font-semibold text-gray-900">{item.user.name}</p>
                       <p className="text-sm text-gray-600">{item.user.email}</p>
                       {item.user.reputation !== undefined && (
                         <p className="text-sm text-yellow-600 font-semibold">
@@ -304,3 +286,4 @@ export default function ItemDetailPage() {
     </div>
   );
 }
+  

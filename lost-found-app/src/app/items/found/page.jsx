@@ -38,11 +38,11 @@ export default function ReportFoundItemPage() {
     brand: '',
     distinguishingFeatures: '',
     contactInfo: '',
-    rewardAmount: '',
     tags: [],
-    images: []
+    images: [] // Will store base64 strings
   });
 
+  const [imagePreviews, setImagePreviews] = useState([]); // For displaying previews
   const [currentTag, setCurrentTag] = useState('');
 
   // Categories
@@ -77,16 +77,61 @@ export default function ReportFoundItemPage() {
     updateFormData('tags', formData.tags.filter(tag => tag !== tagToRemove));
   };
 
-  // Handle image upload
-  const handleImageUpload = (e) => {
+  // Convert file to base64
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Handle image upload with base64 conversion
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    const imageUrls = files.map(file => URL.createObjectURL(file));
-    updateFormData('images', [...formData.images, ...imageUrls]);
+    
+    if (formData.images.length + files.length > 5) {
+      setError('Maximum 5 images allowed');
+      return;
+    }
+
+    const newImages = [];
+    const newPreviews = [];
+
+    for (const file of files) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setError(`${file.name} is not an image`);
+        continue;
+      }
+
+      // Validate file size (10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setError(`${file.name} exceeds 10MB limit`);
+        continue;
+      }
+
+      try {
+        // Convert to base64
+        const base64 = await fileToBase64(file);
+        newImages.push(base64);
+        newPreviews.push(base64); // Use base64 for preview
+      } catch (err) {
+        console.error('Error converting image:', err);
+        setError(`Failed to process ${file.name}`);
+      }
+    }
+
+    // Update state with new images
+    updateFormData('images', [...formData.images, ...newImages]);
+    setImagePreviews([...imagePreviews, ...newPreviews]);
   };
 
   // Remove image
   const removeImage = (indexToRemove) => {
     updateFormData('images', formData.images.filter((_, index) => index !== indexToRemove));
+    setImagePreviews(imagePreviews.filter((_, index) => index !== indexToRemove));
   };
 
   // Validate step
@@ -170,11 +215,6 @@ export default function ReportFoundItemPage() {
       setError('Something went wrong. Please try again.');
       setLoading(false);
     }
-  };
-
-  // Get progress percentage
-  const getProgress = () => {
-    return (step / 4) * 100;
   };
 
   return (
@@ -395,6 +435,7 @@ export default function ReportFoundItemPage() {
                     >
                       {tag}
                       <button
+                        type="button"
                         onClick={() => removeTag(tag)}
                         className="hover:bg-green-200 rounded-full p-1 transition-colors"
                       >
@@ -477,17 +518,21 @@ export default function ReportFoundItemPage() {
                     onChange={handleImageUpload}
                     className="hidden"
                     id="image-upload"
+                    disabled={formData.images.length >= 5}
                   />
                   <label htmlFor="image-upload" className="cursor-pointer">
                     <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                     <p className="text-gray-600 font-medium">Click to upload images</p>
-                    <p className="text-sm text-gray-500 mt-1">PNG, JPG up to 10MB each</p>
+                    <p className="text-sm text-gray-500 mt-1">PNG, JPG up to 10MB each (Max 5 images)</p>
+                    <p className="text-sm text-gray-600 font-medium mt-2">
+                      {formData.images.length}/5 images uploaded
+                    </p>
                   </label>
                 </div>
 
-                {formData.images.length > 0 && (
+                {imagePreviews.length > 0 && (
                   <div className="grid grid-cols-3 gap-4 mt-4">
-                    {formData.images.map((img, index) => (
+                    {imagePreviews.map((img, index) => (
                       <div key={index} className="relative group">
                         <img
                           src={img}
@@ -495,6 +540,7 @@ export default function ReportFoundItemPage() {
                           className="w-full h-32 object-cover rounded-xl"
                         />
                         <button
+                          type="button"
                           onClick={() => removeImage(index)}
                           className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                         >
@@ -526,6 +572,7 @@ export default function ReportFoundItemPage() {
           {/* Navigation Buttons */}
           <div className="flex items-center justify-between mt-10 pt-6 border-t border-gray-200">
             <button
+              type="button"
               onClick={prevStep}
               disabled={step === 1}
               className="px-6 py-3 text-gray-600 hover:text-gray-800 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
@@ -536,6 +583,7 @@ export default function ReportFoundItemPage() {
 
             {step < 4 ? (
               <button
+                type="button"
                 onClick={nextStep}
                 className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all font-bold flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
@@ -544,6 +592,7 @@ export default function ReportFoundItemPage() {
               </button>
             ) : (
               <button
+                type="button"
                 onClick={handleSubmit}
                 disabled={loading}
                 className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all font-bold flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"

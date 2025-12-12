@@ -1,11 +1,46 @@
 import Link from 'next/link';
-import { Search, Package, Users, Shield, ArrowRight } from 'lucide-react';
+import { Search, Package, Users, Shield, ArrowRight, User } from 'lucide-react';
+import { cookies } from 'next/headers';
+import { verifyToken } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import LogoutButton from '@/components/LogoutButton';
 
-export default function HomePage() {
+async function getUser() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+  if (!token) return null;
+  const decoded = verifyToken(token);
+  return decoded || null;
+}
+
+async function getUserData(userId) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        name: true,
+        profileImage: true,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    return null;
+  }
+}
+
+export default async function HomePage() {
+  const user = await getUser();
+  let userData = null;
+
+  if (user) {
+    userData = await getUserData(user.userId);
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
       {/* Navigation */}
-      <nav className="bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
+      <nav className="bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -15,18 +50,54 @@ export default function HomePage() {
               <h1 className="text-2xl font-bold text-white">Lost & Found</h1>
             </div>
             <div className="flex items-center gap-4">
-              <Link 
-                href="/login"
-                className="text-white hover:text-gray-200 font-medium transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link 
-                href="/signup"
-                className="px-6 py-2 bg-white text-indigo-600 rounded-lg hover:bg-gray-100 transition-colors font-medium"
-              >
-                Get Started
-              </Link>
+              {user ? (
+                <>
+                  <Link 
+                    href="/dashboard"
+                    className="text-white hover:text-gray-200 font-medium transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link 
+                    href="/items"
+                    className="text-white hover:text-gray-200 font-medium transition-colors"
+                  >
+                    Browse Items
+                  </Link>
+                  {/* Profile Avatar Button */}
+                  <Link
+                    href="/profile"
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 transition-all border border-white border-opacity-30 hover:border-opacity-50 group relative"
+                    title={userData?.name || 'Profile'}
+                  >
+                    {userData?.profileImage ? (
+                      <img
+                        src={userData.profileImage}
+                        alt="Profile"
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
+                    )}
+                  </Link>
+                  <LogoutButton />
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/login"
+                    className="text-white hover:text-gray-200 font-medium transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link 
+                    href="/signup"
+                    className="px-6 py-2 bg-white text-indigo-600 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

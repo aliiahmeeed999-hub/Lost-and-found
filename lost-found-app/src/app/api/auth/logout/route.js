@@ -1,19 +1,12 @@
-import { NextResponse } from 'next/server';
+/**
+ * MONOLITHIC ARCHITECTURE: Auth Route Handler
+ * 
+ * POST /api/auth/logout
+ * This route delegates to AuthController which clears the auth token
+ */
+
+import { AuthController } from '@/lib/controllers/AuthController';
 
 export async function POST() {
-  const response = NextResponse.json({ 
-    success: true,
-    message: 'Logged out successfully' 
-  });
-  
-  // Clear the token cookie
-  response.cookies.set('token', '', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 0,
-    path: '/'
-  });
-
-  return response;
+  return AuthController.logout();
 }

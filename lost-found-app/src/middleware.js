@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from './lib/auth';
 
 export function middleware(request) {
   const token = request.cookies.get('token')?.value;
@@ -8,29 +7,36 @@ export function middleware(request) {
   // Public routes that don't require authentication
   const publicRoutes = ['/login', '/signup', '/forgot-password', '/'];
   
+  // Protected routes that require authentication
+  const protectedRoutes = ['/dashboard', '/profile', '/items'];
+  
   // Check if the current path is public
-  const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+  const isPublicRoute = publicRoutes.some(route => pathname === route || (route !== '/' && pathname.startsWith(route)));
+  
+  // Check if the current path is protected
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
 
-  // If trying to access protected route without token
-  if (!isPublicRoute && !token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  // ========================================
+  // HANDLE PROTECTED ROUTES
+  // ========================================
+  if (isProtectedRoute) {
+    // If trying to access protected route without token, redirect to login
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+    
+    // Token exists - continue to protected route
+    // Token verification happens server-side (in server components/API routes)
+    return NextResponse.next();
   }
 
-  // If has token, verify it
-  if (token) {
-    const decoded = verifyToken(token);
-    
-    // If token is invalid, redirect to login
-    if (!decoded && !isPublicRoute) {
-      const response = NextResponse.redirect(new URL('/login', request.url));
-      response.cookies.delete('token');
-      return response;
-    }
-
-    // If already logged in and trying to access login/signup/forgot-password, redirect to dashboard
-    if (decoded && (pathname === '/login' || pathname === '/signup' || pathname === '/forgot-password')) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
+  // ========================================
+  // HANDLE PUBLIC ROUTES
+  // ========================================
+  if (isPublicRoute) {
+    // If trying to access auth pages while already logged in,
+    // we'll handle redirect in the page/layout components
+    return NextResponse.next();
   }
 
   return NextResponse.next();
